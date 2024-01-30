@@ -1,0 +1,40 @@
+.table{
+	padding: 0;
+	margin: 0;
+}
+
+h1{
+	font-size: 18px;
+	font-weight: 500;
+}
+.download-link{
+	display: inline-block;
+    width: -webkit-fill-available;
+    text-align: right;
+}
+.table>tbody >tr >td{
+	padding: 1px;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.dashboard-box {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff; /* White Background */
+            border: 1px solid #d1d5db; /* Light Gray Border */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light Shadow */
+            text-align: center;
+            align-items: center;
+            align-content: center;
+            
+        }
+        
+@media only screen and (max-width: 500px) {
+.table-responsive{
+	font-size: 5px;
+}
+
+}
