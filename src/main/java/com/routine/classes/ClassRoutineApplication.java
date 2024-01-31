@@ -2,6 +2,8 @@ package com.routine.classes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 @SpringBootApplication
 @EnableWebSecurity
-public class ClassRoutineApplication {
+public class ClassRoutineApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClassRoutineApplication.class, args);
@@ -34,5 +36,9 @@ public class ClassRoutineApplication {
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
+	@Override
+	  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+	      return builder.sources(ClassRoutineApplication.class);
+	  }
 
 }
