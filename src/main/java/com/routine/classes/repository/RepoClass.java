@@ -18,13 +18,13 @@ public class RepoClass implements RepoInt {
 
 	@Override
 	public List<Map<String, Object>> getStudentRoutine() {
-		String sqlForStudentRountine = "SELECT * FROM `student_time_table`";
+		String sqlForStudentRountine = "SELECT * FROM student_time_table";
 		return jdbcTemp.queryForList(sqlForStudentRountine);
 	}
 	
 	@Override
 	public List<Map<String, Object>> getFacultyRoutine() {
-		String sqlForFacultyRountine = "SELECT * FROM `faculty_time_table`";
+		String sqlForFacultyRountine = "SELECT * FROM faculty_time_table";
 		return jdbcTemp.queryForList(sqlForFacultyRountine);
 	}
 	@Override
@@ -33,10 +33,10 @@ public class RepoClass implements RepoInt {
 		int rowsUpdated = 0;
 
 		try {
-			String deleteStudentRecordSql = "delete from `student_time_table`";
+			String deleteStudentRecordSql = "delete from student_time_table";
 			jdbcTemp.update(deleteStudentRecordSql);
 
-			String sqlForStudentRountine = "insert into `student_time_table` (column_names)  values (question_mark)";
+			String sqlForStudentRountine = "insert into student_time_table (column_names)  values (question_mark)";
 
 			sqlForStudentRountine = getStudentPreparedStatement(columnNum, sqlForStudentRountine);
 
@@ -62,16 +62,16 @@ public class RepoClass implements RepoInt {
 			String sqlForFacultyRountine = "";
 
 			if (select_faculty.equalsIgnoreCase("bulk_update")) {
-				String deleteFacultyRecordSql = "delete from `faculty_time_table`";
+				String deleteFacultyRecordSql = "delete from faculty_time_table";
 				jdbcTemp.update(deleteFacultyRecordSql);
-				sqlForFacultyRountine = "insert into `faculty_time_table` (column_names)  values (question_mark)";
+				sqlForFacultyRountine = "insert into faculty_time_table (column_names)  values (question_mark)";
 				sqlForFacultyRountine = getFacultyPreparedStatement(columnNum, sqlForFacultyRountine);
 
 			} else {
-				String deleteFacultyRecordSql = "delete from `faculty_time_table` where `faculty`=" + select_faculty;
+				String deleteFacultyRecordSql = "delete from faculty_time_table where faculty=" + select_faculty;
 				jdbcTemp.update(deleteFacultyRecordSql);
 
-				sqlForFacultyRountine = "insert into `faculty_time_table` (column_names)  values (question_mark)";
+				sqlForFacultyRountine = "insert into faculty_time_table (column_names)  values (question_mark)";
 				sqlForFacultyRountine = getFacultyPreparedStatement(columnNum, sqlForFacultyRountine);
 
 			}
