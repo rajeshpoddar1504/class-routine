@@ -26,7 +26,7 @@ public class ControllerClass {
 	@Autowired
 	StudentRoutineServiceImpl studentServImpl;
 
-	@GetMapping("/class-routine")
+	@GetMapping(value = {"/class-routine","/"})
 	public ModelAndView getStudentSchedule() {
 
 		ModelAndView mv = new ModelAndView();
