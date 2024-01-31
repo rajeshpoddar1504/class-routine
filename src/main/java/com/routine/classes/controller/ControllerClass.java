@@ -49,23 +49,23 @@ public class ControllerClass {
 	public ModelAndView getRoutineUpdate(@RequestParam("miltPrtFile") MultipartFile miltPrtFile,
 			@RequestParam("upload-category") String upload_category,
 			@RequestParam(name = "select-faculty", required = false) String select_faculty) {
+		ModelAndView mv = new ModelAndView();
+		
 
 		try {
 			if(upload_category.equals("student")) {
 				studentServImpl.updateStudentRoutine(miltPrtFile);
+				mv.addObject("routine_data", studentServImpl.getStudentRoutine());
+				mv.addObject("download_url","/download/student/routine");
 			}else if(upload_category.equals("faculty")) {
 				studentServImpl.updateFacultyRoutine(miltPrtFile,select_faculty);
+				mv.addObject("download_url","/download/faculty/routine");
+				mv.addObject("routine_data", studentServImpl.getFacultyRoutine());
 			}
-			
-			
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("routine_data", studentServImpl.getStudentRoutine());
 		mv.setViewName("home");
 		return mv;
 	}

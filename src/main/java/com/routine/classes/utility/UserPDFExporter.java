@@ -10,6 +10,10 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -24,7 +28,20 @@ import com.lowagie.text.pdf.PdfWriter;
 
 import net.bytebuddy.dynamic.scaffold.MethodRegistry.Handler.ForAbstractMethod;
  
+
 public class UserPDFExporter {
+	
+	@Value("${pdf.main.heading}")
+	String mainHead;
+	@Value("${pdf.sub.heading.department}")
+	String subHeadDepart;
+	@Value("${pdf.sub.heading.university}")
+	String subHeadUniversity;
+	
+	@Value("${pdf.sub.heading.validity}")
+	String subHeadValidity;
+	
+	
     private List<Map<String,Object>> scheduleMapList;
     Stream stream;
     int columnsNm;
@@ -75,16 +92,48 @@ public class UserPDFExporter {
     public void export(HttpServletResponse response) throws DocumentException, IOException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
-         
+        
+        System.out.println();
+        
         document.open();
-        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(18);
-        font.setColor(Color.BLUE);
+        Font mainHFont = FontFactory.getFont(FontFactory.TIMES);
+        mainHFont.setSize(15);
+        mainHFont.setColor(Color.BLACK);
+        mainHFont.setStyle(Font.UNDERLINE);
          
-        Paragraph p = new Paragraph("Class Schedule", font);
-        p.setAlignment(Paragraph.ALIGN_CENTER);
+        Font subHDFont = FontFactory.getFont(FontFactory.TIMES);
+        subHDFont.setSize(13);
+        subHDFont.setColor(Color.BLACK);
+        
+       
+        Font effectFromFont = FontFactory.getFont(FontFactory.TIMES);
+        effectFromFont.setSize(10);
+        effectFromFont.setColor(Color.BLACK);
+        
+        Paragraph mainHP = new Paragraph("Class Routine 2024", mainHFont);
+        mainHP.setAlignment(Paragraph.ALIGN_CENTER);
          
-        document.add(p);
+        Paragraph subDepart = new Paragraph("Department of Computer Science and Engineering", subHDFont);
+        subDepart.setAlignment(Paragraph.ALIGN_CENTER);
+        
+        Paragraph subUni = new Paragraph("Bangamata Sheikh Fojilatunnesa Mujib Science and Technology University", subHDFont);
+        subUni.setAlignment(Paragraph.ALIGN_CENTER);
+        
+        Paragraph subEffe = new Paragraph("Effective from: 02 Feb 2024", effectFromFont);
+        subEffe.setAlignment(Paragraph.ALIGN_CENTER);
+        
+        
+        mainHP.setAlignment(Paragraph.ALIGN_CENTER);
+        subDepart.setAlignment(Paragraph.ALIGN_CENTER);
+        subUni.setAlignment(Paragraph.ALIGN_CENTER);
+        subEffe.setAlignment(Paragraph.ALIGN_CENTER);
+        
+        
+        document.add(mainHP);
+        document.add(subDepart);
+        document.add(subUni);
+        document.add(subEffe);
+        
          
         PdfPTable table = new PdfPTable(columnsNm);
         

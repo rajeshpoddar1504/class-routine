@@ -7,6 +7,17 @@ $('input[type=radio][name=upload-category]').change(function() {
     }
 });
 
+$('input[type=submit][id=submit-form]').click(function(e) {
+	
+	if($('#select-faculty').attr('value')=='' && $('input[name="upload-category"]:checked').val()=='faculty'){
+		e.preventDefault();
+		$('#alert-msg').html('Select Faculty ...');
+	}else if($('#fileUpload').val()==''){
+		e.preventDefault();
+		$('#alert-msg').html('Choose file to upload ...');
+	}
+});
+
 
 function getPDF(){
 /*

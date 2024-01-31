@@ -78,7 +78,7 @@
 			<div><a href="/templates/faculty-routine-uploder.xlsx" class="link-primary" download>+download faculty template</a></div>
 			
 			<input type="submit" id="submit-form" class="btn btn-primary mt-3">
-			
+			<div><span id="alert-msg" class="text-danger"></span></div>
 		</form>
 	</div>
 
