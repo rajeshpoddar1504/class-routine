@@ -80,7 +80,8 @@ public class ControllerClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "admin";
+		//return "admin";
+		return "NewAdmin";
 	}
 	@GetMapping("/admin/class-routine/update")
 	public String getAfterRoutine() {
@@ -111,7 +112,7 @@ public class ControllerClass {
 		System.out.println("call through ajax");
 
 	}
-	@GetMapping("/download/faculty/routine")
+	@GetMapping("/download/faculty/routine" )
 	public void downloadFacultyRoutine(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("application/pdf");
 
@@ -134,5 +135,7 @@ public class ControllerClass {
 		}
 		//System.out.println("call through ajax");
 	}
+	
+	
 
 }

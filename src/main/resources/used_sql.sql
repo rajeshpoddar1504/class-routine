@@ -37,4 +37,28 @@ ts11 varchar(250)  NOT NULL default '' ,
 ts12 varchar(250)  NOT NULL default '' 
 )engine=innodb character set utf8 collate utf8_unicode_ci;
 
+--for mysql 
+create table if not exists faculty_details(
+id int AUTO_INCREMENT PRIMARY KEY,
+faculty_fName varchar(250)  NOT NULL,
+faculty_lName varchar(250)  NOT NULL,
+faculty_abbre varchar(250)  NOT NULL
+);
+
+ALTER TABLE faculty_details AUTO_INCREMENT = 100;
+
+--for postgres
+create table if not exists faculty_details(
+id SERIAL PRIMARY KEY,
+faculty_fName varchar(250)  NOT NULL,
+faculty_lName varchar(250)  NOT NULL,
+faculty_abbre varchar(250)  NOT NULL,
+UNIQUE(faculty_fName, faculty_lName,faculty_abbre)
+);
+ALTER SEQUENCE faculty_details_id_seq RESTART WITH 100;
+
+create table if not exists class_time_slots(
+id SERIAL PRIMARY KEY,
+time_slot varchar(250)  NOT NULL UNIQUE
+);
 

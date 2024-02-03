@@ -18,6 +18,11 @@ public class ClassRoutineApplication extends SpringBootServletInitializer{
 		SpringApplication.run(ClassRoutineApplication.class, args);
 	}
 	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+	      return builder.sources(ClassRoutineApplication.class);
+	  }
+	
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -32,13 +37,11 @@ public class ClassRoutineApplication extends SpringBootServletInitializer{
             .failureHandler(authenticationFailureHandler());
         return http.build();
     }
+	
 	@Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
-	@Override
-	  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-	      return builder.sources(ClassRoutineApplication.class);
-	  }
+	
 
 }

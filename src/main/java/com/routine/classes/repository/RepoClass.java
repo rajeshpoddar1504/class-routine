@@ -45,7 +45,8 @@ public class RepoClass implements RepoInt {
 				Object[] dataMap = data.get(i).values().toArray();
 
 				rowsUpdated = jdbcTemp.update(sqlForStudentRountine, dataMap);
-
+				System.out.println(rowsUpdated);
+				
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
