@@ -142,6 +142,7 @@
 						<div class="my-2">
 							<h3>Available Time slots:</h3>
 							<div class="my-2 d-flex justify-center avail-ts-cont flex-wrap tscont">
+							
 							<p class="d-none pforapend"></p>
 								<!-- <p id="ts1">9:30-10:30</p>
 								<p id='ts2'>10:30-11:30</p>
@@ -153,19 +154,13 @@
 					</div>
 					<div id="modify-ts-section" class="my-4 d-none">
 						<h3>Available Time slots:</h3>
+						
+						
 						<div
-							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable tscont">
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable tsupdatable tscont">
+							
 							<p class="d-none pforapend"></p>
 							 <p id="ts1" class="ts-selectable">9:30-10:30</p>
-							<!--<p id="ts2" class="ts-selectable">10:30-11:30</p>
-							<p id="ts3" class="ts-selectable">11:30-12:30</p>
-							<p id="ts4" class="ts-selectable">1:00-2:00</p>
-							<p id="ts5" class="ts-selectable">2:00-3:30</p>
-							<p id="ts6" class="ts-selectable">9:30-10:30</p>
-							<p id="ts7" class="ts-selectable">10:30-11:30</p>
-							<p id="ts8" class="ts-selectable">11:30-12:30</p>
-							<p id="ts9" class="ts-selectable">1:00-2:00</p>
-							<p id="ts10" class="ts-selectable">2:00-3:30</p> -->
 						</div>
 
 						<form action="/admin/update/timeslot" method="POST"
@@ -173,27 +168,20 @@
 							<label for="inputField3">Update to Slot: </label> <input
 								type="text" id="inputField3" name="inputField3"
 								placeholder="enter time slot">
+								<input type="hidden" id="tstomodify" value="" />
 							<button type="submit" class="btn btn-warning" id="addTS">Modify</button>
 						</form>
 					</div>
 					<div id="delete-ts-section" class="my-4 d-none">
 						<h3>Available Time slots:</h3>
+						<c:set var="tstodelete" value="" scope="page"></c:set>
 						<div
-							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable tscont">
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable tsdeletable tscont">
 							<p class="d-none pforapend"></p>
-							<!-- <p>10:30-11:30</p>
-							<p>11:30-12:30</p>
-							<p>1:00-2:00</p>
-							<p>2:00-3:30</p>
-							<p>9:30-10:30</p>
-							<p>10:30-11:30</p>
-							<p>11:30-12:30</p>
-							<p>1:00-2:00</p>
-							<p>2:00-3:30</p> -->
 						</div>
 						<form action="/admin/delete/timeslot" method="POST"
 							id="updateTsForm">
-
+							<input type="hidden" id="tstodelete" value="" />
 							<button type="submit" class="btn btn-danger" id="deleteTS">Remove</button>
 						</form>
 					</div>

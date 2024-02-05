@@ -18,12 +18,22 @@
 </head>
 <body>
 <body>
+	<div class=" d-flex text-end p-4">
+		<a href="/admin/new/features" class="link-primary">New Feautures <svg
+				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+				height="24" fill="none" stroke="currentColor" stroke-width="2"
+				stroke-linecap="round" stroke-linejoin="round">
+ 		 <path d="M5 12h14M12 5l7 7-7 7" />
+		</svg>
 
+		</a>
+	</div>
 	<div class="dashboard-box">
 		<h2 class="text-2xl font-semibold text-gray-800 mb-4">Update
 			Routine</h2>
 
-		<form action="/admin/class-routine/update" method="post" enctype="multipart/form-data">
+		<form action="/admin/class-routine/update" method="post"
+			enctype="multipart/form-data">
 
 			<!-- Radio Options -->
 			<div class="mb-4">
@@ -39,9 +49,10 @@
 							class="ml-2 block text-sm text-gray-600">Faculty</label>
 					</div>
 					<div class="flex p-2 ">
-						<input type="radio" id="student-radio" name="upload-category" value="student"
-							class="focus:ring-parrot-green-500 h-4 w-4 text-parrot-green-600 border-gray-300" onclick="">
-						<label for="student-radio" 
+						<input type="radio" id="student-radio" name="upload-category"
+							value="student"
+							class="focus:ring-parrot-green-500 h-4 w-4 text-parrot-green-600 border-gray-300"
+							onclick=""> <label for="student-radio"
 							class="ml-2 block text-sm text-gray-600">Student</label>
 					</div>
 				</div>
@@ -50,40 +61,55 @@
 			<!-- Select Options -->
 			<div class="mb-4 d-flex justify-content-center">
 				<div class="d-flex flex-row justify-content-center ">
+				
 					<label for="selectOptions"
 						class="block text-sm font-medium text-gray-600 mx-2">Select
 						Faculty</label>
 					<!-- focus:outline-none focus:ring-parrot-green-500 focus:border-parrot-green-500 -->
+					
 					<select id="select-faculty" name="select-faculty"
 						class="mx-2 text-base  sm:text-sm">
 						<option value="" disabled selected>-- Select Option --</option>
-						<option value="bulk_update">Bulk update</option>
+						<c:forEach var="faculty" items="${faculties }" >
+							<option value="${faculty.id}">${faculty.fName} ${faculty.lName}</option>
+						</c:forEach>
+						
+						<!-- <option value="bulk_update">Bulk update</option>
 						<option value="option1">Faculty 1</option>
 						<option value="option2">Faculty 2</option>
-						<option value="option3">Faculty 3</option>
+						<option value="option3">Faculty 3</option> -->
 					</select>
 
 				</div>
 			</div>
 
 			<!-- File Upload -->
-			<div class="mb-4" >
+			<div class="mb-4">
 				<label for="fileUpload"
 					class="block text-sm font-medium text-gray-600">Upload File</label>
-				<input type="file" id="fileUpload" name="miltPrtFile" 
+				<input type="file" id="fileUpload" name="miltPrtFile"
 					accept=".xlsx, .xls" class="mt-1 p-2 border rounded-md">
-					
+
 			</div>
-			<div><a href="/templates/student-routine-uploder.xlsx" class="link-primary" download> +download student template</a></div>
-			<div><a href="/templates/faculty-routine-uploder.xlsx" class="link-primary" download>+download faculty template</a></div>
-			
+			<div>
+				<a href="/templates/student-routine-uploder.xlsx"
+					class="link-primary" download> +download student template</a>
+			</div>
+			<div>
+				<a href="/templates/faculty-routine-uploder.xlsx"
+					class="link-primary" download>+download faculty template</a>
+			</div>
+
 			<input type="submit" id="submit-form" class="btn btn-primary mt-3">
-			<div><span id="alert-msg" class="text-danger"></span></div>
+			<div>
+				<span id="alert-msg" class="text-danger"></span>
+			</div>
 		</form>
 	</div>
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="/js/custom.js" ></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
 
 </html>

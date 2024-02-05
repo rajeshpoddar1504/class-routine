@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lowagie.text.DocumentException;
+import com.routine.classes.models.FacultyBean;
+import com.routine.classes.services.FacultyService;
 import com.routine.classes.services.StudentRoutineServiceImpl;
 import com.routine.classes.utility.UserPDFExporter;
 
@@ -25,7 +28,10 @@ import com.routine.classes.utility.UserPDFExporter;
 public class ControllerClass {
 	@Autowired
 	StudentRoutineServiceImpl studentServImpl;
-
+	
+	@Autowired
+	FacultyService facultyServ;
+	
 	@GetMapping(value = {"/class-routine","/"})
 	public ModelAndView getStudentSchedule() {
 
@@ -51,7 +57,6 @@ public class ControllerClass {
 			@RequestParam(name = "select-faculty", required = false) String select_faculty) {
 		ModelAndView mv = new ModelAndView();
 		
-
 		try {
 			if(upload_category.equals("student")) {
 				studentServImpl.updateStudentRoutine(miltPrtFile);
@@ -71,20 +76,38 @@ public class ControllerClass {
 	}
 
 	@GetMapping("/admin/login")
-	
-	public String getAdminLogin() {
+	public ModelAndView getAdminLogin() {
 
+		ModelAndView mv=new ModelAndView();
 		try {
-			studentServImpl.getStudentRoutine();
+			List<FacultyBean> faculties=facultyServ.getUsers();
+			
+			//System.out.println(faculties.get(0).getfName());
+			mv.addObject("faculties",faculties);
+			mv.setViewName("admin");
+			//studentServImpl.getStudentRoutine();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return mv;
+		//return "NewAdmin";
+	}
+	
+	
+	@GetMapping("/admin/new/features")
+	public String getAdminNewFeatres() {
+
 		//return "admin";
 		return "NewAdmin";
 	}
+
 	@GetMapping("/admin/class-routine/update")
 	public String getAfterRoutine() {
+		List<FacultyBean> faculties=facultyServ.getUsers();
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("faculties",faculties);
+		mv.setViewName("admin");
 		return "admin";
 	}
 
@@ -109,7 +132,7 @@ public class ControllerClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("call through ajax");
+		//System.out.println("call through ajax");
 
 	}
 	@GetMapping("/download/faculty/routine" )
@@ -136,6 +159,4 @@ public class ControllerClass {
 		//System.out.println("call through ajax");
 	}
 	
-	
-
 }

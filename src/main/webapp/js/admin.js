@@ -143,18 +143,35 @@ $('#addModifytTime').on('change', function() {
 
 
 
-var selectedTsModiy='';
-$('.tscont p').click(function() { 
+/*$('.tscont p').click(function() { 
 	alert(" ");
    selectedTsModiy = $(this).attr('id');
 	$('.ts-selectable').removeClass('ts-selected');
 	$(this).addClass('ts-selected');
 });
-
+*/
 $(document).on('click','.ts-selectable',function(){
 	selectedTsModiy = $(this).attr('id');
 	$('.ts-selectable').removeClass('ts-selected');
 	$(this).addClass('ts-selected');
+	});
+	
+
+
+$(document).on('click','.tsdeletable p',function(){
+	selectedTsDelete = $(this).attr('id');
+	$('.ts-selectable').removeClass('ts-selected');
+	$(this).addClass('ts-selected');
+	$('#tstomodify').val(selectedTsDelete);
+	console.log('to delete'+selectedTsDelete);
+	});
+
+$(document).on('click','.tsupdatable p',function(){
+	selectedTsModiy = $(this).attr('id');
+	$('.ts-selectable').removeClass('ts-selected');
+	$(this).addClass('ts-selected');
+	$('#tstomodify').val(selectedTsModiy);
+	console.log('to modify'+selectedTsModiy);
 	});
 
 $('#addTS').click(function(e) {
