@@ -73,11 +73,6 @@
 						<c:forEach var="faculty" items="${faculties }" >
 							<option value="${faculty.id}">${faculty.fName} ${faculty.lName}</option>
 						</c:forEach>
-						
-						<!-- <option value="bulk_update">Bulk update</option>
-						<option value="option1">Faculty 1</option>
-						<option value="option2">Faculty 2</option>
-						<option value="option3">Faculty 3</option> -->
 					</select>
 
 				</div>

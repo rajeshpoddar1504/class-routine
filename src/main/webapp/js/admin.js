@@ -11,14 +11,26 @@ function showTab(tabId) {
 	document.querySelectorAll('.tab-button').forEach(button => {
 		button.classList.remove('active');
 	});
-
-	// Add 'active' class to the clicked tab button
-	//  document.querySelector('.tab-button[data-tab="${tabId}"]').classList.add('active');
-
-	//console.log($(this).attr("class"));
-
 }
 
+
+$('input[type=radio][name=time-date-room]').change(function() {
+	if (this.value == 'updateDays') {
+		$('#timeSections').addClass('d-none');
+		$('#roomSections').addClass('d-none');
+		$('#daysSections').removeClass('d-none');
+	} else if (this.value == 'updateRooms') {
+		$('#timeSections').addClass('d-none');
+		$('#roomSections').removeClass('d-none');
+		$('#daysSections').addClass('d-none');
+
+	} else {
+		$('#timeSections').removeClass('d-none');
+		$('#roomSections').addClass('d-none');
+		$('#daysSections').addClass('d-none');
+
+	}
+});
 
 
 $('input[type=radio][name=addDelete]').change(function() {
@@ -47,26 +59,26 @@ $('input[type=radio][name=addDelete]').change(function() {
 
 
 $('#deleteFacultySubmit').click(function(e) {
-		e.preventDefault();
-		var selectedFaculty=$('#selectFaculty option:selected').attr("value");
-		alert(selectedFaculty);
-		$.ajax({
-			url: '/admin/delete/user',
-			data: {empId:selectedFaculty},
-			type: 'post'
-		}).done(function() {
-			$("#selectFaculty option[value=='selectedFaculty']").remove();
-			$('#alert-msg').text('');
-			$('#success-msg').text('success!!');
-			$('#addFacultyForm').each(function() {
-				this.reset();
-			});
-			
-		})
-			.fail(function() {
-				$('#alert-msg').text('error occurred!!');
-			});
-		
+	e.preventDefault();
+	var selectedFaculty = $('#selectFaculty option:selected').attr("value");
+	alert(selectedFaculty);
+	$.ajax({
+		url: '/admin/delete/user',
+		data: { empId: selectedFaculty },
+		type: 'post'
+	}).done(function() {
+		$("#selectFaculty option[value=='selectedFaculty']").remove();
+		$('#alert-msg').text('');
+		$('#success-msg').text('success!!');
+		$('#addFacultyForm').each(function() {
+			this.reset();
+		});
+
+	})
+		.fail(function() {
+			$('#alert-msg').text('error occurred!!');
+		});
+
 });
 
 
@@ -76,9 +88,9 @@ $('#addFacultySubmit').click(function(e) {
 		$('#alert-msg').text('provide all fields');
 	} else {
 		e.preventDefault();
-		
+
 		var formData = new FormData(document.getElementById('addFacultyForm'));
-		
+
 		$.ajax({
 			url: '/admin/add/user',
 			data: formData,
@@ -100,102 +112,426 @@ $('#addFacultySubmit').click(function(e) {
 });
 
 $('#addModifytTime').on('change', function() {
-	
-//  console.log( this.value );
-	//var selectedOpt=this.value;
-	if(this.value=='addtime'){
+
+	if (this.value == 'addtime') {
 		$('#modify-ts-section').addClass('d-none');
 		$('#delete-ts-section').addClass('d-none');
 		$('#add-ts-section').removeClass('d-none');
-		
-		
-		
-	}else if(this.value=='modifytime'){
+	} else if (this.value == 'modifytime') {
 		$('#add-ts-section').addClass('d-none');
 		$('#delete-ts-section').addClass('d-none');
 		$('#modify-ts-section').removeClass('d-none');
-		
-	}else if(this.value=='deletetime'){
+
+	} else if (this.value == 'deletetime') {
 		$('#add-ts-section').addClass('d-none');
 		$('#modify-ts-section').addClass('d-none');
 		$('#delete-ts-section').removeClass('d-none');
-		
+
 	}
-	
+
 	$.ajax({
-			url: '/admin/timeslot/get',
-			type: 'GET',
-		}).done(function(slotList) {
-			//$('.tscont').remove
-			$(".tscont p").remove();
-			slotList.forEach(slot=>{
-						$('.tscont')
-						.append("<p id='"+slot.id+"' class='ts-selectable'>"+slot.time_slot+"</p>");
-						
-			})
-			//$('input[type=text]').reset();
+		url: '/admin/timeslot/get',
+		type: 'GET',
+	}).done(function(slotList) {
+
+		$(".tscont p").remove();
+		slotList.forEach(slot => {
+			$('.tscont')
+				.append("<p id='" + slot.id + "' class='ts-selectable'>" + slot.time_slot + "</p>");
 		})
-			.fail(function() {
-				$('#alert-msg').text('error occurred!!');
-			});
-			
+
+	})
+		.fail(function() {
+			$('#alert-msg').text('error occurred!!');
+		});
+
+});
+
+$('#addModifyDay').on('change', function() {
+
+	if (this.value == 'addday') {
+		$('#modify-day-section').addClass('d-none');
+		$('#delete-day-section').addClass('d-none');
+		$('#add-day-section').removeClass('d-none');
+	} else if (this.value == 'modifyday') {
+		$('#add-day-section').addClass('d-none');
+		$('#delete-day-section').addClass('d-none');
+		$('#modify-day-section').removeClass('d-none');
+
+	} else if (this.value == 'deleteday') {
+		$('#add-day-section').addClass('d-none');
+		$('#modify-day-section').addClass('d-none');
+		$('#delete-day-section').removeClass('d-none');
+
+	}
+
+	$.ajax({
+		url: '/admin/days/get',
+		type: 'GET',
+	}).done(function(dayList) {
+
+		
+		$(".daycont p").remove();
+		dayList.forEach(day => {
+			console.log( day.day_abbr);
+			$('.daycont')
+				.append("<p id='" + day.id + "' class='day-selectable'>" + day.day_abbr + "</p>");
+		})
+
+	})
+		.fail(function() {
+			$('#alert-msg').text('error occurred!!');
+		});
+
+});
+
+$('#addModifyRooms').on('change', function() {
+
+	if (this.value == 'addroom') {
+		$('#modify-room-section').addClass('d-none');
+		$('#delete-room-section').addClass('d-none');
+		$('#add-room-section').removeClass('d-none');
+	} else if (this.value == 'modifyroom') {
+		$('#add-room-section').addClass('d-none');
+		$('#delete-room-section').addClass('d-none');
+		$('#modify-room-section').removeClass('d-none');
+
+	} else if (this.value == 'deleteroom') {
+		$('#add-room-section').addClass('d-none');
+		$('#modify-room-section').addClass('d-none');
+		$('#delete-room-section').removeClass('d-none');
+
+	}
+
+	$.ajax({
+		url: '/admin/rooms/get',
+		type: 'GET',
+	}).done(function(roomList) {
+
+		$(".roomcont p").remove();
+		roomList.forEach(room => {
+			$('.roomcont')
+				.append("<p id='" + room.id + "' class='room-selectable'>" + room.room_abbr + "</p>");
+		})
+
+	})
+		.fail(function() {
+			$('#alert-msg').text('error occurred!!');
+		});
+
 });
 
 
 
-/*$('.tscont p').click(function() { 
-	alert(" ");
-   selectedTsModiy = $(this).attr('id');
-	$('.ts-selectable').removeClass('ts-selected');
-	$(this).addClass('ts-selected');
-});
-*/
-$(document).on('click','.ts-selectable',function(){
+$(document).on('click', '.ts-selectable', function() {
 	selectedTsModiy = $(this).attr('id');
 	$('.ts-selectable').removeClass('ts-selected');
 	$(this).addClass('ts-selected');
-	});
-	
+});
 
-
-$(document).on('click','.tsdeletable p',function(){
+$(document).on('click', '.tsdeletable p', function() {
 	selectedTsDelete = $(this).attr('id');
 	$('.ts-selectable').removeClass('ts-selected');
 	$(this).addClass('ts-selected');
-	$('#tstomodify').val(selectedTsDelete);
-	console.log('to delete'+selectedTsDelete);
-	});
+	$('#tstodelete').val(selectedTsDelete);
+	//console.log('to delete'+selectedTsDelete);
+});
 
-$(document).on('click','.tsupdatable p',function(){
+$(document).on('click', '.tsupdatable p', function() {
 	selectedTsModiy = $(this).attr('id');
 	$('.ts-selectable').removeClass('ts-selected');
 	$(this).addClass('ts-selected');
 	$('#tstomodify').val(selectedTsModiy);
-	console.log('to modify'+selectedTsModiy);
-	});
+});
+
+
+$(document).on('click', '.day-selectable p', function() {
+	selectedDayModiy = $(this).attr('id');
+	$('.day-selectable').removeClass('day-selected');
+	$(this).addClass('day-selected');
+});
+
+$(document).on('click', '.day-deletable p', function() {
+	selectedDayDelete = $(this).attr('id');
+	$('.day-selectable').removeClass('day-selected');
+	$(this).addClass('day-selected');
+	$('#daytodelete').val(selectedDayDelete);
+	//console.log('to delete'+selectedTsDelete);
+});
+
+$(document).on('click', '.day-updatable p', function() {
+	selectedDayModiy = $(this).attr('id');
+	$('.day-selectable').removeClass('day-selected');
+	$(this).addClass('day-selected');
+	$('#daytomodify').val(selectedDayModiy);
+});
+
+
+
+$(document).on('click', '.room-selectable p', function() {
+	selectedRoomModiy = $(this).attr('id');
+	$('.room-selectable').removeClass('room-selected');
+	$(this).addClass('room-selected');
+});
+
+$(document).on('click', '.room-deletable p', function() {
+	selectedRoomDelete = $(this).attr('id');
+	console.log(selectedRoomDelete);
+	$('.room-selectable').removeClass('room-selected');
+	$(this).addClass('room-selected');
+	$('#roomtodelete').val(selectedRoomDelete);
+	//console.log('to delete'+selectedTsDelete);
+});
+
+$(document).on('click', '.room-updatable p', function() {
+	selectedRoomModiy = $(this).attr('id');
+	console.log(selectedRoomModiy);
+	$('.room-selectable').removeClass('room-selected');
+	$(this).addClass('room-selected');
+	$('#roomtomodify').val(selectedRoomModiy);
+});
+
 
 $('#addTS').click(function(e) {
-	
+
 	e.preventDefault();
-	var inputTxtVal=$('#tstextI').val();
+	var inputTxtVal = $('#tstextI').val();
 	if ($('#tstextI').val() == '') {
 		$('#alert-addts').text('provide input!!')
-		}else{
-			$.ajax({
+	} else {
+		$.ajax({
 			url: '/admin/timeslot/add',
-			data: {timeSlot:inputTxtVal},
+			data: { timeSlot: inputTxtVal },
 			type: 'post'
 		}).done(function() {
-			
+
 			$('#alert-addts').text('');
-			
+
 			$('#success-addts').text('success!!');
 			$('#addTsForm').each(function() {
 				this.reset();
 			});
-			
+
 		}).fail(function() {
-				$('#alert-addts').text('error occurred!!');
-			});
-		}
+			$('#alert-addts').text('error occurred!!');
 		});
+	}
+});
+
+
+$('#updateTS').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#tstomodify').val();
+	var newTs = $('#modifyTsI').val();
+	//console.log(inputTxtVal,newTs)
+	if ($('#modifyTsI').val() == '') {
+		$('#alert-modifyts').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/timeslot/modify',
+			data: { timeSlot: inputTxtVal, newTimeSlot: newTs },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-modifyts').text('');
+			$('#success-modifyts').text('success!!');
+			$('#updateTsForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-modifyts').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#deleteTS').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#tstodelete').val();
+
+	//console.log(inputTxtVal,newTs)
+	if ($('#tstodelete').val() == '') {
+		$('#alert-modifyts').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/timeslot/delete',
+			data: { timeSlot: inputTxtVal },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-deletets').text('');
+			$('#success-deletets').text('success!!');
+			$('#deleteTsForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-deletets').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#addDay').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#daytextI').val();
+	if ($('#daytextI').val() == '') {
+		$('#alert-addday').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/day/add',
+			data: { day: inputTxtVal },
+			type: 'post'
+		}).done(function() {
+			$('#alert-addday').text('');
+			$('#success-addday').text('success!!');
+			$('#addDayForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-addday').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#updateDay').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#daytomodify').val();
+	var newDay = $('#modifyDayI').val();
+
+	//console.log(inputTxtVal,newTs)
+	if ($('#modifyDayI').val() == '') {
+		$('#alert-modifyday').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/day/modify',
+			data: { dayToModify: inputTxtVal, newDay: newDay },
+			type: 'post'
+		}).done(function() {
+			$('#alert-modifyday').text('');
+			$('#success-modifday').text('success!!');
+			$('#updateDayForm').each(function() {
+				this.reset();
+			});
+		}).fail(function() {
+			$('#alert-modifyday').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#deleteDay').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#daytodelete').val();
+
+	//console.log(inputTxtVal,newTs)
+	if ($('#daytodelete').val() == '') {
+		$('#alert-deleteday').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/day/delete',
+			data: { daysId: inputTxtVal },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-deleteday').text('');
+			$('#success-deleteday').text('success!!');
+			$('#deleteDayForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-deleteday').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#addRoom').click(function(e) {
+	e.preventDefault();
+	var inputTxtValAbbr = $('#roomtextIAbbr').val();
+	var inputTxtValDesc = $('#roomtextIDesc').val();
+	if ($('#roomtextI').val() == '') {
+		$('#alert-addroom').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/rooms/add',
+			data: { newRoomAbbr: inputTxtValAbbr, newRoomDesc: inputTxtValDesc },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-addroom').text('');
+
+			$('#success-addroom').text('success!!');
+			$('#addRoomForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-addroom').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#updateRoom').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#roomtomodify').val();
+	var inputTxtValAbbr = $('#roomtextIAbbr').val();
+	var inputTxtValDesc = $('#roomtextIDesc').val();
+
+	if ($('#modifyRoomI').val() == '') {
+		$('#alert-modifyroom').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/room/modify',
+			data: { roomId: inputTxtVal, newRoomAbbr: inputTxtValAbbr, newRoomDesc: inputTxtValDesc },
+			type: 'post'
+		}).done(function() {
+			$('#alert-modifyroom').text('');
+			$('#success-modifyroom').text('success!!');
+			$('#updateRoomForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-modifyroom').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#deleteRoom').click(function(e) {
+
+	e.preventDefault();
+	var inputTxtVal = $('#roomtodelete').val();
+
+	if ($('#roomtodelete').val() == null) {
+		$('#alert-deleteroom').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/room/delete',
+			data: { roomId: inputTxtVal },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-deleteroom').text('');
+			$('#success-deleteroom').text('success!!');
+			$('#deleteRoomForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-deleteroom').text('error occurred!!');
+		});
+	}
+});

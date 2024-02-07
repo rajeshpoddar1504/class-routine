@@ -31,21 +31,6 @@
 
 			<div id="content1" class="tab-content active-tab">
 				<h2>Tab 1 Content</h2>
-				<!-- <form>
-					<div class="m-4 ">
-						<label for="radioOption">Radio Button:</label> <input type="radio"
-							id="radioOption" name="radioOption">
-					</div>
-					<div class="m-4">
-						<label for="selectOption">Select Option:</label> <select
-							id="selectOption">
-							<option value="option1">Option 1</option>
-							<option value="option2">Option 2</option>
-							<option value="option3">Option 3</option>
-						</select>
-					</div>
-					<button type="submit" class="btn btn-submit">Submit</button>
-				</form> -->
 			</div>
 
 			<div id="content2" class="tab-content">
@@ -85,15 +70,6 @@
 								type="text" id="abbrv" name="abbrevation"
 								placeholder="short name">
 						</div>
-
-						<!-- <div class="m-4 ">
-                    <label for="radioOption1">Radio Button 1:</label>
-                    <input type="radio" id="radioOption1" name="radioOption2">
-                
-
-                    <label for="radioOption2">Radio Button 2:</label>
-                    <input type="radio" id="radioOption2" name="radioOption2">
-                </div> -->
 						<button type="submit" class="btn btn-submit m-2"
 							id="addFacultySubmit">Add Faculty</button>
 					</form>
@@ -112,13 +88,15 @@
 				<div class="my-4">
 					<label for="updateTime">Update Time</label> <input type="radio"
 						id="updateTime" name="time-date-room" value="updateTime"
-						checked="checked"> <label for="updateDate">Update
-						Days</label> <input type="radio" id="updateDate" name="time-date-room"
-						value="updateDate"> <label for="updateRooms">Update
+						checked="checked"><label for="updateRooms">Update
 						Rooms</label> <input type="radio" id="updateRooms" name="time-date-room"
 						value="updateRooms">
+						<label for="updateDate">Update
+						Days</label> <input type="radio" id="updateDays" name="time-date-room"
+						value="updateDays"> 
 				</div>
-				<div class="my-4">
+				<div class="my-4 timeSections" id="timeSections">
+
 					<label for="addModifytTime">Select: </label> <select
 						id="addModifytTime" class="addModifytTime">
 						<option value="addtime" selected="selected">Add New Time
@@ -128,9 +106,8 @@
 					</select>
 					<div id="add-ts-section" class="my-4">
 						<form action="/admin/add/timeslot" method="POST" id="addTsForm">
-							<label for="inputField3">New Time Slot: </label> <input
-								type="text" id="tstextI" name="tstextI"
-								placeholder="enter new time slot">
+							<label for="tstextI">New Time Slot: </label> <input type="text"
+								id="tstextI" name="tstextI" placeholder="enter new time slot">
 							<button type="submit" class="btn btn-submit" id="addTS">Add</button>
 							<div>
 								<span id="success-addts" class="text-success"></span>
@@ -141,35 +118,36 @@
 						</form>
 						<div class="my-2">
 							<h3>Available Time slots:</h3>
-							<div class="my-2 d-flex justify-center avail-ts-cont flex-wrap tscont">
-							
-							<p class="d-none pforapend"></p>
-								<!-- <p id="ts1">9:30-10:30</p>
-								<p id='ts2'>10:30-11:30</p>
-								<p id="ts3">11:30-12:30</p>
-								<p id="ts3">1:00-2:00</p>
-								<p id="ts3">2:00-3:30</p> -->
+							<div
+								class="my-2 d-flex justify-center avail-ts-cont flex-wrap tscont">
+
+								<p class="d-none pforapend"></p>
 							</div>
 						</div>
 					</div>
 					<div id="modify-ts-section" class="my-4 d-none">
 						<h3>Available Time slots:</h3>
-						
-						
+
 						<div
 							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable tsupdatable tscont">
-							
+
 							<p class="d-none pforapend"></p>
-							 <p id="ts1" class="ts-selectable">9:30-10:30</p>
+							<!-- <p id="ts1" class="ts-selectable"></p> -->
 						</div>
 
 						<form action="/admin/update/timeslot" method="POST"
 							id="updateTsForm">
-							<label for="inputField3">Update to Slot: </label> <input
-								type="text" id="inputField3" name="inputField3"
-								placeholder="enter time slot">
-								<input type="hidden" id="tstomodify" value="" />
-							<button type="submit" class="btn btn-warning" id="addTS">Modify</button>
+							<label for="modifyTsI">Update to Slot: </label> <input
+								type="text" id="modifyTsI" name="modifyTsI"
+								placeholder="enter time slot"> <input type="hidden"
+								id="tstomodify" value=null />
+							<button type="submit" class="btn btn-warning" id="updateTS">Modify</button>
+							<div>
+								<span id="success-modifyts" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-modifyts" class="text-danger"></span>
+							</div>
 						</form>
 					</div>
 					<div id="delete-ts-section" class="my-4 d-none">
@@ -180,28 +158,169 @@
 							<p class="d-none pforapend"></p>
 						</div>
 						<form action="/admin/delete/timeslot" method="POST"
-							id="updateTsForm">
-							<input type="hidden" id="tstodelete" value="" />
+							id="deleteTsForm">
+							<input type="hidden" id="tstodelete" value=null />
 							<button type="submit" class="btn btn-danger" id="deleteTS">Remove</button>
+							<div>
+								<span id="success-deletets" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-deletets" class="text-danger"></span>
+							</div>
 						</form>
 					</div>
-					<!-- <div class="m-4">
-							
-							
-							<label for="inputField3">New Time Slot: </label> 
-							<input type="text" id="inputField3" name="inputField3">
-						</div> -->
+				</div>
+
+				<div class="my-4 days-section d-none" id="daysSections">
+					<label for="addModifyDay">Select: </label> <select
+						id="addModifyDay" class="addModifyDay">
+						<option value="addday" selected="selected">Add Day</option>
+						<option value="modifyday">Modify Existing Days</option>
+						<option value="deleteday">Delete Day</option>
+					</select>
+					<div id="add-day-section" class="my-4">
+						<form action="/admin/day/add" method="POST" id="addDayForm">
+							<label for="daytextI">New Day: </label> <input type="text"
+								id="daytextI" name="daytextI" placeholder="enter new day">
+							<button type="submit" class="btn btn-submit" id="addDay">Add</button>
+							<div>
+								<span id="success-addday" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-addday" class="text-danger"></span>
+							</div>
+						</form>
+						<div class="my-2">
+							<h3>Available Days:</h3>
+							<div
+								class="my-2 d-flex justify-center avail-ts-cont flex-wrap tscont daycont">
+								<p class="d-none pforapend"></p>
+							</div>
+						</div>
+					</div>
+					<div id="modify-day-section" class="my-4 d-none">
+						<h3>Available Days:</h3>
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable day-updatable daycont">
+
+							<p class="d-none pforapend"></p>
+							<p id="ts1" class="day-selectable"></p>
+						</div>
+
+						<form action="/admin/update/day" method="POST"
+							id="updateDayForm">
+							<label for="modifyDayI">Update to Day: </label> <input
+								type="text" id="modifyDayI" name="modifyDayI"
+								placeholder="enter day"> <input type="hidden"
+								id="daytomodify" value=null />
+							<button type="submit" class="btn btn-warning" id="updateDay">Modify</button>
+							<div>
+								<span id="success-modifyday" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-modifyday" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
+					<div id="delete-day-section" class="my-4 d-none">
+						<h3>Available Days:</h3>
+						<c:set var="daytodelete" value="" scope="page"></c:set>
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable day-deletable tscont daycont">
+							<p class="d-none pforapend"></p>
+						</div>
+						<form action="/admin/delete/day" method="POST" id="deleteDayForm">
+							<input type="hidden" id="daytodelete" value=null />
+							<button type="submit" class="btn btn-danger" id="deleteDay">Remove</button>
+							<div>
+								<span id="success-deleteday" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-deleteday" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div class="my-4 rooms-section d-none" id="roomSections">
+					 <label for="addModifyRooms">Select: </label> <select
+						id="addModifyRooms" class="addModifytRooms">
+						<option value="addroom" selected="selected">Add New Room</option>
+						<option value="modifyroom">Modify Existing Room</option>
+						<option value="deleteroom">Delete Room</option>
+					</select>
+					<div id="add-room-section" class="my-4">
+						<form action="/admin/add/room" method="POST" id="addRoomForm">
+							<label for="roomtextI">New Room Abbr: </label> <input type="text"
+								id="roomtextIAbbr" name="roomtextI" placeholder="new room abbr">
+								
+								<label for="roomtextI">New Room Desc: </label> <input type="text"
+								id="roomtextIDesc" name="roomtextI" placeholder="new room desc">
+								
+							<button type="submit" class="btn btn-submit" id="addRoom">Add</button>
+							<div>
+								<span id="success-addroom" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-addroom" class="text-danger"></span>
+							</div>
+						</form>
+						<div class="my-2">
+							<h3>Available Rooms:</h3>
+							<div
+								class="my-2 d-flex justify-center avail-ts-cont flex-wrap roomcont ">
+								<p class="d-none pforapend"></p>
+							</div>
+						</div>
+					</div>
+					<div id="modify-room-section" class="my-4 d-none">
+						<h3>Available Rooms:</h3>
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable room-updatable roomcont">
+
+							<p class="d-none pforapend"></p>
+							<p id="ts1" class="room-selectable"></p>
+						</div>
+
+						<form action="/admin/update/room" method="POST"
+							id="updateRoomForm">
+							<label for="modifyRoomI">Room Abbr: </label> <input
+								type="text" id="modifyRoomI" name="modifyRoomI"
+								placeholder="enter room abbr"> 
+								<label for="roomtextI">New Room Desc: </label> <input type="text"
+								id="roomtextIDesc" name="roomtextI" placeholder="new room desc">
+								<input type="hidden"
+								id="roomtomodify" value=null />
+							<button type="submit" class="btn btn-warning" id="updateRoom">Modify</button>
+							<div>
+								<span id="success-modifyroom" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-modifyroom" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
+					<div id="delete-room-section" class="my-4 d-none">
+						<h3>Available Rooms:</h3>
+						
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable room-deletable roomcont">
+							<p class="d-none pforapend"></p>
+						</div>
+						<form action="/admin/delete/room" method="POST"
+							id="deleteRoomForm">
+							<input type="hidden" id="roomtodelete" value=null />
+							<button type="submit" class="btn btn-danger" id="deleteRoom">Remove</button>
+							<div>
+								<span id="success-deleteroom" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-deleteroom" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
 
 				</div>
-				<!-- <form>
-					<label for="selectOption2">Select Option:</label> <select
-						id="selectOption2">
-						<option value="option1">Option 1</option>
-						<option value="option2">Option 2</option>
-						<option value="option3">Option 3</option>
-					</select> <label for="inputField3">Input Field:</label> <input type="text"
-						id="inputField3" name="inputField3">
-				</form> -->
 			</div>
 
 		</div>

@@ -81,6 +81,6 @@ select{
 .modifiable >*{
 	background-color: #fff;
 }
-.ts-selected{
+.ts-selected, .day-selected,.room-selected{
 	background-color: #D3D3D3;
 }

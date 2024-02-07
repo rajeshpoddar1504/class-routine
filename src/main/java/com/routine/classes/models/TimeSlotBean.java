@@ -10,6 +10,7 @@ public class TimeSlotBean {
 	private int id;
 	@JsonProperty("time_slot")
 	private String timeSlots;
+	
 	public int getId() {
 		return id;
 	}

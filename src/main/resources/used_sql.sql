@@ -44,7 +44,6 @@ faculty_fName varchar(250)  NOT NULL,
 faculty_lName varchar(250)  NOT NULL,
 faculty_abbre varchar(250)  NOT NULL
 );
-
 ALTER TABLE faculty_details AUTO_INCREMENT = 100;
 
 --for postgres
@@ -61,4 +60,22 @@ create table if not exists class_time_slots(
 id SERIAL PRIMARY KEY,
 time_slot varchar(250)  NOT NULL UNIQUE
 );
+
+create table if not exists day_details(
+id SERIAL PRIMARY KEY,
+day_abbr varchar(250)  NOT NULL,
+day_desc varchar(250)  NOT NULL,
+UNIQUE(day_abbr, day_desc)
+);
+
+create table if not exists room_details(
+id SERIAL PRIMARY KEY,
+room_abbr varchar(250)  NOT NULL,
+room_desc varchar(250)  NOT NULL,
+UNIQUE(room_abbr, room_desc)
+);
+
+
+
+
 
