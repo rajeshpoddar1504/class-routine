@@ -71,7 +71,7 @@
 						class="mx-2 text-base  sm:text-sm">
 						<option value="" disabled selected>-- Select Option --</option>
 						<c:forEach var="faculty" items="${faculties }" >
-							<option value="${faculty.id}">${faculty.fName} ${faculty.lName}</option>
+							<option value="${faculty.abbrevation}">${faculty.fName} ${faculty.lName}</option>
 						</c:forEach>
 					</select>
 

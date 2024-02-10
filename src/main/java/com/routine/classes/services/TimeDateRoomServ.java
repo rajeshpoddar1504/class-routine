@@ -35,4 +35,15 @@ public interface TimeDateRoomServ {
 
 	int deleteDays(String daysId);
 
+	List<TimeSlotBean> getTimeSlots(String facultyAbbr, String selectedDay, String selectedBatch);
+
+	List<RoomBean> getRooms(String facultyAbbr, String selectedDay, String selectedBatch, String selectedTime);
+
+	int bookSchedule(String facultyAbbr, String selectedDay, String selectedBatch, String selectedTime,
+			String selectedRoom, String courseCode);
+
+	int addBatch(String newBatchAbbr, String newBatchDesc);
+
+	int deleteBatch(String batchAbbr);
+
 }

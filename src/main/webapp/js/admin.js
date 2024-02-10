@@ -13,21 +13,130 @@ function showTab(tabId) {
 	});
 }
 
+$('#facultyListBook, #dayListBook, #batchListBook').on('change', function(e) {
+	
+	e.preventDefault();
+	$('#book-alert-msg').text('');
+	$('#book-success-msg').text('');
+		
+	var selectedFaculty = $('#facultyListBook option:selected').attr("value");
+	var selectedDay = $('#dayListBook option:selected').attr("value");
+	var selectedBatch = $('#batchListBook option:selected').attr("value");
+
+	if (selectedFaculty != '' && selectedDay != '' && selectedBatch != '') {
+		$.ajax({
+			url: '/admin/timeslot/get/filter',
+			data: { facultyAbbr: selectedFaculty, selectedDay: selectedDay, selectedBatch: selectedBatch },
+			type: 'post'
+		}).done(function(result) {
+
+			$("#timeSlotListBook option[value!='']").remove();
+			$.each(result, function(i, timSlot) {
+				$('#timeSlotListBook').append($("<option></option>")
+					.attr("value", timSlot.time_slot)
+					.html(timSlot.time_slot));
+			});
+
+		})
+			.fail(function() {
+				//$('#alert-msg').text('error occurred!!');
+			});
+	}
+});
+
+
+
+$('#timeSlotListBook').on('change', function(e) {
+
+	e.preventDefault();
+	var selectedFaculty = $('#facultyListBook option:selected').attr("value");
+	var selectedDay = $('#dayListBook option:selected').attr("value");
+	var selectedBatch = $('#batchListBook option:selected').attr("value");
+	var selectedTime = $('#timeSlotListBook option:selected').attr("value");
+
+	if (selectedFaculty != '' && selectedDay != '' && selectedBatch != '' && selectedTime != '') {
+		$.ajax({
+			url: '/admin/rooms/get/filter',
+			data: { facultyAbbr: selectedFaculty, selectedDay: selectedDay, selectedBatch: selectedBatch, selectedTime: selectedTime },
+			type: 'post'
+		}).done(function(result) {
+
+			$("#roomListBook option[value!='']").remove();
+			$.each(result, function(i, room) {
+				//console.log(room);
+				$('#roomListBook').append($("<option></option>")
+					.attr("value", room.room_abbr)
+					.html(room.room_desc));
+			});
+
+		})
+			.fail(function() {
+				//$('#alert-msg').text('error occurred!!');
+			});
+	}
+});
+
+
+$('#bookSchedule').click(function(e) {
+	e.preventDefault();
+	
+	e.preventDefault();
+	var selectedFaculty = $('#facultyListBook option:selected').attr("value");
+	var selectedDay = $('#dayListBook option:selected').attr("value");
+	var selectedBatch = $('#batchListBook option:selected').attr("value");
+	var selectedTime = $('#timeSlotListBook option:selected').attr("value");
+	var selectedRoom = $('#roomListBook option:selected').attr("value");
+	var courseCode = $('#coursecode').val();
+	if(selectedFaculty != '' && selectedDay != '' && selectedBatch != '' && selectedTime != ''&&selectedRoom!=''){
+		
+	$.ajax({
+		url: '/admin/book/schedule',
+		data: { facultyAbbr: selectedFaculty, selectedDay: selectedDay, selectedBatch: selectedBatch, selectedTime: selectedTime,selectedRoom:selectedRoom,courseCode:courseCode},
+		type: 'post'
+	}).done(function() {
+		//$("#selectFaculty option[value=='selectedFaculty']").remove();
+		console.log('success');
+		$('#book-alert-msg').text('');
+		$('#book-success-msg').text('success!!');
+		
+		$('#addFacultyForm').each(function() {
+			this.reset();
+		});
+
+	})
+		.fail(function() {
+			$('#book-success-msg').text('');
+			$('#alert-msg').text('error occurred!!');
+		});
+
+	}
+});
 
 $('input[type=radio][name=time-date-room]').change(function() {
 	if (this.value == 'updateDays') {
 		$('#timeSections').addClass('d-none');
 		$('#roomSections').addClass('d-none');
 		$('#daysSections').removeClass('d-none');
+		$('#batchSections').addClass('d-none');
+		
 	} else if (this.value == 'updateRooms') {
 		$('#timeSections').addClass('d-none');
 		$('#roomSections').removeClass('d-none');
 		$('#daysSections').addClass('d-none');
-
-	} else {
+		$('#batchSections').addClass('d-none');
+	} else if(this.value == 'updateBatch'){
+		
+		$('#batchSections').removeClass('d-none');
+		$('#timeSections').addClass('d-none');
+		$('#roomSections').addClass('d-none');
+		$('#daysSections').addClass('d-none');
+		
+	}else{
+		
 		$('#timeSections').removeClass('d-none');
 		$('#roomSections').addClass('d-none');
 		$('#daysSections').addClass('d-none');
+		$('#batchSections').addClass('d-none');
 
 	}
 });
@@ -111,6 +220,7 @@ $('#addFacultySubmit').click(function(e) {
 	}
 });
 
+
 $('#addModifytTime').on('change', function() {
 
 	if (this.value == 'addtime') {
@@ -170,10 +280,10 @@ $('#addModifyDay').on('change', function() {
 		type: 'GET',
 	}).done(function(dayList) {
 
-		
+
 		$(".daycont p").remove();
 		dayList.forEach(day => {
-			console.log( day.day_abbr);
+			console.log(day.day_abbr);
 			$('.daycont')
 				.append("<p id='" + day.id + "' class='day-selectable'>" + day.day_abbr + "</p>");
 		})
@@ -221,7 +331,40 @@ $('#addModifyRooms').on('change', function() {
 
 });
 
+$('#addModifyBatch').on('change', function() {
 
+	if (this.value == 'addbatch') {
+		$('#modify-batch-section').addClass('d-none');
+		$('#delete-batch-section').addClass('d-none');
+		$('#add-batch-section').removeClass('d-none');
+	} else if (this.value == 'modifybatch') {
+		$('#add-batch-section').addClass('d-none');
+		$('#delete-batch-section').addClass('d-none');
+		$('#modify-batch-section').removeClass('d-none');
+
+	} else if (this.value == 'deletebatch') {
+		$('#add-batch-section').addClass('d-none');
+		$('#modify-batch-section').addClass('d-none');
+		$('#delete-batch-section').removeClass('d-none');
+	}
+
+	$.ajax({
+		url: '/admin/batch/get',
+		type: 'GET',
+	}).done(function(batchList) {
+
+		$(".batchcont p").remove();
+		batchList.forEach(batch => {
+			$('.batchcont')
+				.append("<p id='" + batch.batch_abbr + "' class='batch-selectable'>" + batch.batch_desc + "</p>");
+		})
+
+	})
+		.fail(function() {
+			$('#alert-msg').text('error occurred!!');
+		});
+
+});
 
 $(document).on('click', '.ts-selectable', function() {
 	selectedTsModiy = $(this).attr('id');
@@ -285,10 +428,20 @@ $(document).on('click', '.room-deletable p', function() {
 
 $(document).on('click', '.room-updatable p', function() {
 	selectedRoomModiy = $(this).attr('id');
-	console.log(selectedRoomModiy);
+	
 	$('.room-selectable').removeClass('room-selected');
 	$(this).addClass('room-selected');
 	$('#roomtomodify').val(selectedRoomModiy);
+});
+
+$(document).on('click', '.batch-deletable p', function() {
+	selectedBatchModiy = $(this).attr('id');
+	
+	$('.batch-selectable').removeClass('room-selected');
+	$(this).addClass('room-selected');
+	$('#batchtodelete').val(selectedBatchModiy);
+	
+	
 });
 
 
@@ -481,6 +634,31 @@ $('#addRoom').click(function(e) {
 	}
 });
 
+$('#addBatch').click(function(e) {
+	e.preventDefault();
+	var inputTxtValAbbr = $('#batchtextI').val();
+	var inputTxtValDesc = $('#batchtextIDesc').val();
+	if (inputTxtValAbbr == ''||inputTxtValDesc=='') {
+		$('#alert-addbatch').text('provide input!!')
+	} else {
+		$.ajax({
+			url: '/admin/batch/add',
+			data: { newBatchAbbr: inputTxtValAbbr, newBatchDesc: inputTxtValDesc },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-addbatch').text('');
+
+			$('#success-addbatch').text('success!!');
+			$('#addBatchForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-addbatch').text('error occurred!!');
+		});
+	}
+});
 
 $('#updateRoom').click(function(e) {
 
@@ -532,6 +710,32 @@ $('#deleteRoom').click(function(e) {
 
 		}).fail(function() {
 			$('#alert-deleteroom').text('error occurred!!');
+		});
+	}
+});
+
+
+$('#deleteBatch').click(function(e) {
+	e.preventDefault();
+	var batchtodelete = $('#batchtodelete').val();
+	console.log(batchtodelete);
+	if (batchtodelete == null || batchtodelete =='') {
+		$('#alert-deletebatch').text('select batch!!')
+	} else {
+		$.ajax({
+			url: '/admin/batch/delete',
+			data: { batchAbbr: batchtodelete },
+			type: 'post'
+		}).done(function() {
+
+			$('#alert-deletebatch').text('');
+			$('#success-deletebatch').text('success!!');
+			$('#deleteBatchForm').each(function() {
+				this.reset();
+			});
+
+		}).fail(function() {
+			$('#alert-deletebatch').text('error occurred!!');
 		});
 	}
 });

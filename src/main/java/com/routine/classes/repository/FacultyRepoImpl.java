@@ -1,5 +1,6 @@
 package com.routine.classes.repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.routine.classes.models.BatchBean;
 import com.routine.classes.models.FacultyBean;
 
 @Repository
@@ -38,6 +40,14 @@ public class FacultyRepoImpl implements FacultyRepoInt{
 		int users=jdbc.update(deleteUserSql,Integer.valueOf(empId));
 		//System.out.println(empId);
 		return users;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getBatch() {
+		String getBatchesSql="select * from batch_details";
+		List<Map<String, Object>> batches=jdbc.queryForList(getBatchesSql);
+		return batches;
 	}
 
 }

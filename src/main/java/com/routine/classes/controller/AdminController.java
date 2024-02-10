@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.routine.classes.models.BatchBean;
 import com.routine.classes.models.DayBean;
 import com.routine.classes.models.FacultyBean;
 import com.routine.classes.models.RoomBean;
@@ -62,8 +63,13 @@ public class AdminController {
 
 	@GetMapping("timeslot/get")
 	public List<TimeSlotBean> getTimeSlots() {
-
 		List<TimeSlotBean> tsList = dateRoomServ.getTimeSlots();
+		return tsList;
+	}
+	@PostMapping("timeslot/get/filter")
+	public List<TimeSlotBean> getTimeSlots(String facultyAbbr,String selectedDay,String selectedBatch) {
+		List<TimeSlotBean> tsList = dateRoomServ.getTimeSlots(facultyAbbr,selectedDay,selectedBatch);
+		//tsList.forEach(e->System.out.println(e.getTimeSlots()) );
 		return tsList;
 	}
 
@@ -91,6 +97,13 @@ public class AdminController {
 	public List<RoomBean> getRooms() {
 		List<RoomBean> tsList = dateRoomServ.getRooms();
 		return tsList;
+	}
+	
+	@PostMapping("rooms/get/filter")
+	public List<RoomBean> getRooms(String facultyAbbr,String selectedDay,String selectedBatch,String selectedTime) {
+		List<RoomBean> roomList = dateRoomServ.getRooms(facultyAbbr,selectedDay,selectedBatch,selectedTime);
+		roomList.forEach(e->System.out.println(e.getRoomDesc()));
+		return roomList;
 	}
 
 	@PostMapping("rooms/add")
@@ -132,6 +145,38 @@ public class AdminController {
 	@PostMapping("day/delete")
 	public int deleteDays(String daysId) {
 		int rowsUpdated = dateRoomServ.deleteDays(daysId);
+		return rowsUpdated;
+	}
+	
+	@GetMapping("batch/get")
+	public List<BatchBean> getBatches() {
+		List<BatchBean> batchList = facultyServ.getBatches();
+		return batchList;
+	}
+
+	@PostMapping("batch/add")
+	public int addBatch(String newBatchAbbr,String newBatchDesc) {
+		int rowsUpdated = dateRoomServ.addBatch(newBatchAbbr,newBatchDesc);
+		return rowsUpdated;
+	}
+
+	@PostMapping("batch/modify")
+	public int modifyBatch(String dayToModify, String newDay) {
+		int rowsUpdated = dateRoomServ.modifyDays(dayToModify, newDay);
+		return rowsUpdated;
+	}
+
+	@PostMapping("batch/delete")
+	public int deleteBatch(String batchAbbr) {
+		System.out.println("batchAbbr=="+batchAbbr);
+		int rowsUpdated = dateRoomServ.deleteBatch(batchAbbr);
+		return rowsUpdated;
+	}
+	
+	
+	@PostMapping("book/schedule")
+	public int bookSchedule(String facultyAbbr,String selectedDay,String selectedBatch,String selectedTime,String selectedRoom,String courseCode) {
+		int rowsUpdated = dateRoomServ.bookSchedule(facultyAbbr,selectedDay,selectedBatch,selectedTime,selectedRoom,courseCode);
 		return rowsUpdated;
 	}
 

@@ -18,7 +18,15 @@ $('input[type=submit][id=submit-form]').click(function(e) {
 	}
 });
 
-
+$('#semesterSelect').change(function(e) {
+	var semesterSelected=$(this + ':selected').val();
+	var currentLoc=location.href;
+	
+	//console.log(currentLoc.substring(currentLoc.lastIndexOf('tine/') + 1));
+	
+	window.location.href=currentLoc.substring(0,currentLoc.lastIndexOf('tine') + 4)+'/'+semesterSelected;
+});
+	
 function getPDF(){
 /*
 		var HTML_Width = $(".canvas_div_pdf").width();

@@ -15,6 +15,7 @@ public interface StudentRoutineSevice {
 	String updateStudentRoutine(MultipartFile miltPrtFile);
 	void updateFacultyRoutine(MultipartFile miltPrtFile, String select_faculty);
 
+	public List<Map<String, Object>> getStudentRoutineByBatch(String batchId);
 
 
 }

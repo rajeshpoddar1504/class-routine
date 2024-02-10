@@ -27,6 +27,7 @@ public class StudentRoutineServiceImpl implements StudentRoutineSevice{
 	@Override
 	public List<Map<String, Object>> getStudentRoutine() {
 		//System.out.println(repoInt.getStudentRoutine());
+		
 		return repoInt.getStudentRoutine();
 	}
 	
@@ -81,7 +82,11 @@ public class StudentRoutineServiceImpl implements StudentRoutineSevice{
 		return repoInt.getFacultyRoutine();
 	}
 
-	
-	
-
+	@Override
+	public List<Map<String, Object>> getStudentRoutineByBatch(String batchId) {
+		
+		
+		
+		return repoInt.getStudentRoutineByBatch(batchId);
+	}
 }

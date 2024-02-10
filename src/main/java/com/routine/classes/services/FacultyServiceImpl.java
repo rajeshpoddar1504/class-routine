@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.routine.classes.models.BatchBean;
 import com.routine.classes.models.FacultyBean;
 import com.routine.classes.repository.FacultyRepoImpl;
 import com.routine.classes.repository.FacultyRepoInt;
@@ -35,6 +36,14 @@ public class FacultyServiceImpl implements FacultyService {
 	public String deleteUser(String empId) {
 		int deletedFac = fauRepoInt.deleteUsers(empId);
 		return String.valueOf(deletedFac);
+	}
+
+	@Override
+	public List<BatchBean> getBatches() {
+		ObjectMapper mapper = new ObjectMapper();
+		List<BatchBean> batchList = fauRepoInt.getBatch().stream()
+				.map(e -> mapper.convertValue(e, BatchBean.class)).collect(Collectors.toList());
+		return batchList;
 	}
 
 }

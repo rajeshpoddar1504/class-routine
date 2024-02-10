@@ -18,7 +18,7 @@ public class RepoClass implements RepoInt {
 
 	@Override
 	public List<Map<String, Object>> getStudentRoutine() {
-		String sqlForStudentRountine = "SELECT * FROM student_time_table";
+		String sqlForStudentRountine = "SELECT * FROM batch_time_day_details";
 		return jdbcTemp.queryForList(sqlForStudentRountine);
 	}
 	
@@ -132,6 +132,13 @@ public class RepoClass implements RepoInt {
 
 		sql = sql.replace("question_mark", values.substring(0, values.length() - 1));
 		return sql;
+	}
+
+	@Override
+	public List<Map<String, Object>> getStudentRoutineByBatch(String batchId) {
+		String sqlForStudentRountine = "SELECT * FROM batch_time_day_details where batch_abbr=?";
+		System.out.println(jdbcTemp.queryForList(sqlForStudentRountine,batchId));
+		return jdbcTemp.queryForList(sqlForStudentRountine,batchId);
 	}
 
 }

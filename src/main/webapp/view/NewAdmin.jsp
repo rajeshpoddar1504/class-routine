@@ -20,7 +20,7 @@
 	<div class="dashboard">
 
 		<div class="tab-buttons">
-			<div class="tab-button active" onclick="showTab('content1')">Tab1</div>
+			<div class="tab-button active" onclick="showTab('content1')">Book Service</div>
 			<div class="tab-button" onclick="showTab('content2')">Faculty
 				Service</div>
 			<div class="tab-button" onclick="showTab('content3')">Days &
@@ -30,7 +30,69 @@
 		<div class="tab-content-container">
 
 			<div id="content1" class="tab-content active-tab">
-				<h2>Tab 1 Content</h2>
+				<h2>Book Schedule: </h2>
+				<div class="my-4">
+				<label for="facultyListBook">Book For: </label> <select
+						id="facultyListBook" class="facultyListBook">
+						<option value="" selected="selected" disabled>--Select Faculty--</option>
+						<c:forEach var="faculty" items="${faculties }" >
+							<option value="${faculty.abbrevation}">${faculty.fName} ${faculty.lName}</option>
+						</c:forEach>
+					</select>
+					</div>
+					<div class="m-3">
+					<label for="dayListBook">Choose day: </label> <select
+						id="dayListBook" class="dayListBook">
+						<option value="" selected="selected" disabled>--Select Day--</option>
+						<option value="SUN">Sun</option>
+						<option value="MON">Mon</option>
+						<option value="TUE">Tue</option>
+						<option value="WED">Wed</option>
+						<option value="THU">Thu</option>
+						
+					</select>
+					</div>
+					<div class="m-3">
+					<label for="batchListBook">Choose batch: </label> <select
+						id="batchListBook" class="batchListBook">
+						<option value="" selected="selected" disabled>--Select Batch--</option>
+						<c:forEach var="batch" items="${batches }" >
+							<option value="${batch.batchAbbr}">${batch.batchDesc}</option>
+						</c:forEach>
+					</select>
+					</div>
+					
+					<div class="m-3">
+					<label for="timeSlotListBook">Available time slots: </label> <select
+						id="timeSlotListBook" class="timeSlotListBook">
+						<option value="" selected="selected" disabled>--Select Time--</option>
+						<%-- <c:forEach var="timeslot" items="${timeslots }" >
+							<option value="${batch.time_slot}">${timeslot.time_slot}</option>
+						</c:forEach> --%>
+					</select>
+					</div>
+					
+					<div class="m-3">
+					<label for="roomListBook">Available rooms: </label> <select
+						id="roomListBook" class="roomListBook">
+						<option value="" selected="selected" disabled>--Select room--</option>
+						<%-- <c:forEach var="room" items="${rooms}" >
+							<option value="${room.room_abbr}">${room.room_desc}</option>
+						</c:forEach> --%>
+					</select>
+					</div>
+					<div class="m-3" >
+					<label for="coursecode">Course: </label>
+					<input type="text" id="coursecode" name="coursecode" placeholder="course code" >
+					</div>
+					<button type="submit" id="bookSchedule"
+							class="btn btn-submit">Book</button>
+					<div>
+					<span id="book-success-msg" class="text-success"></span>
+				</div>
+				<div>
+					<span id="book-alert-msg" class="text-danger"></span>
+				</div>
 			</div>
 
 			<div id="content2" class="tab-content">
@@ -91,9 +153,13 @@
 						checked="checked"><label for="updateRooms">Update
 						Rooms</label> <input type="radio" id="updateRooms" name="time-date-room"
 						value="updateRooms">
-						<label for="updateDate">Update
+						<!-- <label for="updateDate">Update
 						Days</label> <input type="radio" id="updateDays" name="time-date-room"
-						value="updateDays"> 
+						value="updateDays">  -->
+						
+						<label for="updateBatch">Update
+						Batch</label> <input type="radio" id="updateBatch" name="time-date-room"
+						value="updateBatch"> 
 				</div>
 				<div class="my-4 timeSections" id="timeSections">
 
@@ -101,7 +167,7 @@
 						id="addModifytTime" class="addModifytTime">
 						<option value="addtime" selected="selected">Add New Time
 							Slots</option>
-						<option value="modifytime">Modify Existing Time Slots</option>
+						<!-- <option value="modifytime">Modify Existing Time Slots</option> -->
 						<option value="deletetime">Delete Time Slots</option>
 					</select>
 					<div id="add-ts-section" class="my-4">
@@ -170,8 +236,9 @@
 						</form>
 					</div>
 				</div>
-
-				<div class="my-4 days-section d-none" id="daysSections">
+				
+				<!-- day section starts -->
+				<%-- <div class="my-4 days-section d-none" id="daysSections">
 					<label for="addModifyDay">Select: </label> <select
 						id="addModifyDay" class="addModifyDay">
 						<option value="addday" selected="selected">Add Day</option>
@@ -240,13 +307,13 @@
 							</div>
 						</form>
 					</div>
-				</div>
-
+				</div> --%>
+				<!-- day section ends -->
 				<div class="my-4 rooms-section d-none" id="roomSections">
 					 <label for="addModifyRooms">Select: </label> <select
 						id="addModifyRooms" class="addModifytRooms">
 						<option value="addroom" selected="selected">Add New Room</option>
-						<option value="modifyroom">Modify Existing Room</option>
+						<!-- <option value="modifyroom">Modify Existing Room</option> -->
 						<option value="deleteroom">Delete Room</option>
 					</select>
 					<div id="add-room-section" class="my-4">
@@ -279,7 +346,7 @@
 							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable room-updatable roomcont">
 
 							<p class="d-none pforapend"></p>
-							<p id="ts1" class="room-selectable"></p>
+							<!-- <p id="ts1" class="room-selectable"></p> -->
 						</div>
 
 						<form action="/admin/update/room" method="POST"
@@ -321,6 +388,87 @@
 					</div>
 
 				</div>
+				<!-- batch section starts here -->
+				<div class="my-4 batch-section d-none" id="batchSections">
+					 <label for="addModifyBatch">Select: </label> <select
+						id="addModifyBatch" class="addModifyBatch">
+						<option value="addbatch" selected="selected">Add New Batch</option>
+						<!-- <option value="modifybatch">Modify Existing Batch</option> -->
+						<option value="deletebatch">Delete Batch</option>
+					</select>
+					<div id="add-batch-section" class="my-4">
+						<form action="/admin/add/batch" method="POST" id="addBatchForm">
+							<label for="batchtextI">New Batch Abbr: </label> <input type="text"
+								id="batchtextI" name="batchtextI" placeholder="batch abbr ex: 101 for 1-I">
+								
+								<label for="batchtextIDesc">New Batch Desc: </label> <input type="text"
+								id="batchtextIDesc" name="batchtextIDesc" placeholder="batch desc ex: 1-I">
+								
+							<button type="submit" class="btn btn-submit" id="addBatch">Add</button>
+							<div>
+								<span id="success-addbatch" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-addbatch" class="text-danger"></span>
+							</div>
+						</form>
+						<div class="my-2">
+							<h3>Available Batches:</h3>
+							<div
+								class="my-2 d-flex justify-center avail-ts-cont flex-wrap batchcont ">
+								<p class="d-none pforapend"></p>
+							</div>
+						</div>
+					</div>
+					<div id="modify-batch-section" class="my-4 d-none">
+						<h3>Available Batches:</h3>
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable room-updatable batchcont">
+
+							<p class="d-none pforapend"></p>
+							<p id="bt1" class="batch-selectable"></p>
+						</div>
+
+						<form action="/admin/update/batch" method="POST"
+							id="updateBatchForm">
+							<label for="modifyBatchI">Room Abbr: </label> <input
+								type="text" id="modifyBatchI" name="modifyBatchI"
+								placeholder="enter batch abbr"> 
+								<label for="modifyBatchIDesc">New Batch Desc: </label> <input type="text"
+								id="modifyBatchIDesc" name="modifyBatchIDesc" placeholder="new batch desc">
+								<input type="hidden"
+								id="batchmodify" value=null />
+							<button type="submit" class="btn btn-warning" id="updateBatch">Modify</button>
+							<div>
+								<span id="success-modifybatch" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-modifybatch" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
+					<div id="delete-batch-section" class="my-4 d-none">
+						<h3>Available Batches:</h3>
+						
+						<div
+							class="my-2 d-flex justify-center avail-ts-cont flex-wrap modifiable batch-deletable batchcont">
+							<p class="d-none pforapend"></p>
+						</div>
+						<form action="/admin/delete/batch" method="POST"
+							id="deleteBatchForm">
+							<input type="hidden" id="batchtodelete" value=null />
+							<button type="submit" class="btn btn-danger" id="deleteBatch">Remove</button>
+							<div>
+								<span id="success-deletebatch" class="text-success"></span>
+							</div>
+							<div>
+								<span id="alert-deletebatch" class="text-danger"></span>
+							</div>
+						</form>
+					</div>
+
+				</div>
+				<!-- batch section ends here -->
 			</div>
 
 		</div>

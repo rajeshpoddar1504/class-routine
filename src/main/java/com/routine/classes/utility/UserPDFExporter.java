@@ -3,6 +3,7 @@ package com.routine.classes.utility;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,11 +47,13 @@ public class UserPDFExporter {
     Stream stream;
     int columnsNm;
     List<Object> headerValues;
-     
-    public UserPDFExporter(List<Map<String,Object>> scheduleMap) {
+     String batchDesc;
+    public UserPDFExporter(List<Map<String,Object>> scheduleMap, String batchDesc) {
+    	System.out.println(scheduleMap);
         this.scheduleMapList = scheduleMap;
-        headerValues=scheduleMap.get(0).values().stream().filter(e->!(e.toString().equals(""))).collect(Collectors.toList());
-        columnsNm= headerValues.size();
+        headerValues=scheduleMap.get(0).keySet().stream().filter(e->!(e.toString().equals("day"))).collect(Collectors.toList());
+        columnsNm= headerValues.size()+1;
+        this.batchDesc=batchDesc;
     }
  
     private void writeTableHeader(PdfPTable table) {
@@ -63,6 +66,8 @@ public class UserPDFExporter {
          
         Font font = FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.BLACK);
+        cell.setPhrase(new Phrase("Day/Time", font));
+        table.addCell(cell);
         headerValues.forEach(e->{
         	
         	cell.setPhrase(new Phrase(e.toString(), font));
@@ -77,23 +82,40 @@ public class UserPDFExporter {
     	Font font = FontFactory.getFont(FontFactory.COURIER);
     	font.setSize(12);
         font.setColor(Color.BLACK);
+        
+        for (Map<String,Object> map: scheduleMapList) {
+        	String currentDay=map.get("day").toString();
+        	cell.setPhrase(new Phrase(map.get("day").toString(),font));
+        	table.addCell(cell);
+        	map.values().stream().filter(e->!e.equals(currentDay)).forEach(e->{
+        	cell.setPhrase(new Phrase(e==null?"":e.toString(),font));
+        	table.addCell(cell);
+        	}
+        			);
+        	
+        	
+			
+		}
     	
-    	for (int i=1;i<scheduleMapList.size();i++) {
-    		ArrayList list=new ArrayList<>(scheduleMapList.get(i).values());
-    		
-    		for (int j=0;j<columnsNm;j++) {
-    			cell.setPhrase(new Phrase(list.get(j).toString(),font));
-    			table.addCell(cell);
-    		}
-    		
-    	}
+		/*
+		 * for (int i=1;i<scheduleMapList.size();i++) { ArrayList list=new
+		 * ArrayList<>(scheduleMapList.get(i).values());
+		 * 
+		 * for (int j=0;j<columnsNm;j++) {
+		 * 
+		 * cell.setPhrase(new Phrase(list.get(j).toString(),font)); table.addCell(cell);
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
     }
      
     public void export(HttpServletResponse response) throws DocumentException, IOException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         
-        System.out.println();
+        //System.out.println();
         
         document.open();
         Font mainHFont = FontFactory.getFont(FontFactory.TIMES);
@@ -119,7 +141,7 @@ public class UserPDFExporter {
         Paragraph subUni = new Paragraph("Bangamata Sheikh Fojilatunnesa Mujib Science and Technology University", subHDFont);
         subUni.setAlignment(Paragraph.ALIGN_CENTER);
         
-        Paragraph subEffe = new Paragraph("Effective from: 02 Feb 2024", effectFromFont);
+        Paragraph subEffe = new Paragraph("Year/Semester: "+batchDesc, subHDFont);
         subEffe.setAlignment(Paragraph.ALIGN_CENTER);
         
         
@@ -137,7 +159,7 @@ public class UserPDFExporter {
          
         PdfPTable table = new PdfPTable(columnsNm);
         
-        table.setWidthPercentage(110f);
+        table.setWidthPercentage(100f);
        // table.setWidths();
         table.setWidths(getWidthArray());
         table.setSpacingBefore(5);
@@ -153,7 +175,7 @@ public class UserPDFExporter {
     private float[] getWidthArray(){
     	float[] widthArr=new float[columnsNm];
     	for(int i=0;i<columnsNm;i++) {
-    		if(i==0||i==1) {
+    		if(i==0) {
     			widthArr[i]=2.2f;
     		}else {
     			widthArr[i]=3.5f;

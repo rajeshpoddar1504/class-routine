@@ -84,6 +84,37 @@ TimeDateRoomInt dateRoomInt;
 		int rowsUpdated=dateRoomInt.deleteDay(daysId);
 		return rowsUpdated;
 	}
+	@Override
+	public List<TimeSlotBean> getTimeSlots(String facultyAbbr, String selectedDay, String selectedBatch) {
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<String, Object>> tsList=dateRoomInt.getTimeSlots(facultyAbbr,selectedDay,selectedBatch);
+		List<TimeSlotBean> avTs=tsList.stream().map(e->mapper.convertValue(e, TimeSlotBean.class)).collect(Collectors.toList());
+		return avTs;
+	}
+	@Override
+	public List<RoomBean> getRooms(String facultyAbbr, String selectedDay, String selectedBatch, String selectedTime) {
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<String, Object>> roomList=dateRoomInt.getRooms(facultyAbbr,selectedDay,selectedBatch,selectedTime);
+		List<RoomBean> avRooms=roomList.stream().map(e->mapper.convertValue(e, RoomBean.class)).collect(Collectors.toList());
+		return avRooms;
+	}
+	@Override
+	public int bookSchedule(String facultyAbbr, String selectedDay, String selectedBatch, String selectedTime,
+			String selectedRoom, String courseCode) {
+		int rowsUpdated=dateRoomInt.bookSchedule(facultyAbbr,selectedDay,selectedBatch,selectedTime,selectedRoom,courseCode);
+		return rowsUpdated;
+	}
+	@Override
+	public int addBatch(String newBatchAbbr, String newBatchDesc) {
+		int rowsUpdated=dateRoomInt.addBatch(newBatchAbbr,newBatchDesc);
+		return rowsUpdated;
+		
+	}
+	@Override
+	public int deleteBatch(String batchAbbr) {
+		int rowsUpdated=dateRoomInt.deleteBatch(batchAbbr);
+		return rowsUpdated;
+	}
 	
 
 }

@@ -12,4 +12,5 @@ public interface RepoInt{
 	String updateStudentRoutine(List<Map<String, Object>> data);
 	public void updateFacultytRoutine(List<Map<String, Object>> fileData, String select_faculty);
 	public List<Map<String, Object>> getFacultyRoutine();
+	public List<Map<String, Object>> getStudentRoutineByBatch(String batchId);
 }
