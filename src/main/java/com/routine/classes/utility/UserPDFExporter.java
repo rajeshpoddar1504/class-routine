@@ -26,6 +26,7 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.routine.classes.models.TimeSlotBean;
 
 import net.bytebuddy.dynamic.scaffold.MethodRegistry.Handler.ForAbstractMethod;
  
@@ -47,16 +48,18 @@ public class UserPDFExporter {
     Stream stream;
     int columnsNm;
     List<Object> headerValues;
-     String batchDesc;
-    public UserPDFExporter(List<Map<String,Object>> scheduleMap, String batchDesc) {
+    String batchDesc;
+    List<TimeSlotBean> timeSlots;
+    public UserPDFExporter(List<Map<String,Object>> scheduleMap, List<TimeSlotBean> slots, String batchDesc) {
     	//System.out.println(scheduleMap);
         this.scheduleMapList = scheduleMap;
-        headerValues=scheduleMap.get(0).keySet().stream().filter(e->!(e.toString().equals("day"))).collect(Collectors.toList());
+        headerValues=slots.stream().map(e->e.getTimeSlots()).collect(Collectors.toList());
         columnsNm= headerValues.size()+1;
         this.batchDesc=batchDesc;
+        timeSlots=slots;
     }
- 
-    private void writeTableHeader(PdfPTable table) {
+
+	private void writeTableHeader(PdfPTable table) {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(Color.LIGHT_GRAY);
         cell.setPaddingLeft(2);
@@ -66,7 +69,7 @@ public class UserPDFExporter {
          
         Font font = FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.BLACK);
-        cell.setPhrase(new Phrase("Day/Time", font));
+        cell.setPhrase(new Phrase("Time / Day", font));
         table.addCell(cell);
         headerValues.forEach(e->{
         	
@@ -85,30 +88,17 @@ public class UserPDFExporter {
         
         for (Map<String,Object> map: scheduleMapList) {
         	String currentDay=map.get("day").toString();
-        	cell.setPhrase(new Phrase(map.get("day").toString(),font));
+        	cell.setPhrase(new Phrase(currentDay,font));
         	table.addCell(cell);
-        	map.values().stream().filter(e->!e.equals(currentDay)).forEach(e->{
-        	cell.setPhrase(new Phrase(e==null?"":e.toString(),font));
-        	table.addCell(cell);
-        	}
-        			);
+        	timeSlots.forEach(e->{
+        		cell.setPhrase(new Phrase(map.get(e.getTimeSlots())==null?"":map.get(e.getTimeSlots()).toString(),font));
+            	table.addCell(cell);
+        	});
         	
-        	
+              	
 			
 		}
     	
-		/*
-		 * for (int i=1;i<scheduleMapList.size();i++) { ArrayList list=new
-		 * ArrayList<>(scheduleMapList.get(i).values());
-		 * 
-		 * for (int j=0;j<columnsNm;j++) {
-		 * 
-		 * cell.setPhrase(new Phrase(list.get(j).toString(),font)); table.addCell(cell);
-		 * 
-		 * }
-		 * 
-		 * }
-		 */
     }
      
     public void export(HttpServletResponse response) throws DocumentException, IOException {
@@ -155,11 +145,10 @@ public class UserPDFExporter {
         document.add(subDepart);
         document.add(subUni);
         document.add(subEffe);
-        
-         
+  
         PdfPTable table = new PdfPTable(columnsNm);
         
-        table.setWidthPercentage(100f);
+        table.setWidthPercentage(110f);
        // table.setWidths();
         table.setWidths(getWidthArray());
         table.setSpacingBefore(5);
