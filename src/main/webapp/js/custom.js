@@ -27,6 +27,14 @@ $('#semesterSelect').change(function(e) {
 	window.location.href=currentLoc.substring(0,currentLoc.lastIndexOf('tine') + 4)+'/'+semesterSelected;
 });
 	
+$('#facultySelect').change(function(e) {
+	var facultySelected=$(this + ':selected').val();
+	var currentLoc=location.href;
+	
+	window.location.href=currentLoc.substring(0,currentLoc.lastIndexOf('tine') + 4)+'/'+facultySelected;
+});
+	
+	
 function getPDF(){
 /*
 		var HTML_Width = $(".canvas_div_pdf").width();

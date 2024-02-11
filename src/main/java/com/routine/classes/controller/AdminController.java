@@ -173,7 +173,7 @@ public class AdminController {
 		return rowsUpdated;
 	}
 	
-	
+
 	@PostMapping("book/schedule")
 	public int bookSchedule(String facultyAbbr,String selectedDay,String selectedBatch,String selectedTime,String selectedRoom,String courseCode) {
 		int rowsUpdated = dateRoomServ.bookSchedule(facultyAbbr,selectedDay,selectedBatch,selectedTime,selectedRoom,courseCode);

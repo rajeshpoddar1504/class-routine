@@ -18,4 +18,6 @@ public interface FacultyService {
 	public String deleteUser(String empId);
 
 	public List<BatchBean> getBatches();
+
+	public List<Map<String, Object>> getRoutineByFaculty(String facultyId);
 }

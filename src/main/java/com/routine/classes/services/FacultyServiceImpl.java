@@ -46,4 +46,9 @@ public class FacultyServiceImpl implements FacultyService {
 		return batchList;
 	}
 
+	@Override
+	public List<Map<String, Object>> getRoutineByFaculty(String faculty) {
+		return fauRepoInt.getRoutineByFaculty(faculty);
+	}
+
 }

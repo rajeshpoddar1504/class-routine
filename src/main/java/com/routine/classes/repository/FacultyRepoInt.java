@@ -20,4 +20,6 @@ public interface FacultyRepoInt {
 	int deleteUsers(String empId);
 
 	List<Map<String, Object>> getBatch();
+
+	List<Map<String, Object>> getRoutineByFaculty(String faculty);
 }

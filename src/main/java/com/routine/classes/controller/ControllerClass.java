@@ -46,15 +46,6 @@ public class ControllerClass {
 	@Autowired
 	FacultyService facultyServ;
 	
-	@GetMapping(value = {"/class-routine","/"})
-	public ModelAndView getStudentSchedule() {
-
-		ModelAndView mv = new ModelAndView();
-		
-		mv.addObject("routine_batches", facultyServ.getBatches());
-		mv.setViewName("home");
-		return mv;
-	}
 	
 	@GetMapping(value = {"/class-routine/{batchId}"})
 	public ModelAndView getStudentScheduleByBatch(@PathVariable("batchId") String batchId) {
@@ -103,17 +94,54 @@ public class ControllerClass {
 		return mapList;
 		
 	}
-
-	@GetMapping("/class-routine/faculty")
-	public ModelAndView getFacultySchedule() {
+	@GetMapping(value = {"/class-routine","/"})
+	public ModelAndView getStudentSchedule() {
 
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("routine_data", studentServImpl.getFacultyRoutine());
-		mv.addObject("download_url","/download/faculty/routine");
+		
+		mv.addObject("routine_batches", facultyServ.getBatches());
 		mv.setViewName("home");
 		return mv;
 	}
+	
+	@GetMapping("/faculty/class-routine")
+	public ModelAndView getFacultySchedule() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("faculty_data", facultyServ.getUsers());
+		//mv.addObject("download_url","/download/faculty/routine");
+		mv.setViewName("faculty_home");
+		return mv;
+	}
+	
+	@GetMapping(value = {"/faculty/class-routine/{facultyId}"})
+	public ModelAndView getStudentScheduleByFculty(@PathVariable("facultyId") String facultyId) {
+		
+		ModelAndView mv = new ModelAndView();
 
+		List<FacultyBean> faculty=facultyServ.getUsers();
+		List<TimeSlotBean> slots= dateRoomServ.getTimeSlots();
+		List<DayBean> days=dateRoomServ.getDays();
+		
+		//slots.stream().forEach(e->System.out.println( e.getTimeSlots()));
+		List<Map<String, Object>> facultyRoutine=facultyServ.getRoutineByFaculty(facultyId);
+		
+		//System.out.println(routineList);
+		
+		List<Map<String, Object>> convertedRoutine=convertToHorizontal(days,slots,facultyRoutine);
+		
+		//System.out.println("converted routine=="+convertedRoutine);
+		mv.addObject("faculty_data", faculty);
+		
+		mv.addObject("routine_day", days);
+		mv.addObject("routine_data", convertedRoutine);
+		mv.addObject("routine_batches", faculty);
+		mv.addObject("routine_timeslot", slots);
+		
+		mv.addObject("download_url","/download/faculty/routine/"+facultyId);
+		mv.setViewName("faculty_home");
+		return mv;
+	}
+	
 	//@PostMapping("/admin/class-routine/update")
 	public ModelAndView getRoutineUpdate(@RequestParam("miltPrtFile") MultipartFile miltPrtFile,
 			@RequestParam("upload-category") String upload_category,
@@ -184,7 +212,8 @@ public class ControllerClass {
 		mv.setViewName("NewAdmin");
 		return mv;
 	}
-
+	
+	
 	@GetMapping("/download/student/routine/{batchId}")
 	public void downloadRoutine(@PathVariable("batchId") String batchId, HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("application/pdf");
@@ -220,10 +249,10 @@ public class ControllerClass {
 			e.printStackTrace();
 		}
 		//System.out.println("call through ajax");
-
 	}
-	@GetMapping("/download/faculty/routine" )
-	public void downloadFacultyRoutine(HttpServletRequest request, HttpServletResponse response) {
+	
+	@GetMapping("/download/faculty/routine/{facultyId}" )
+	public void downloadFacultyRoutine(@PathVariable("facultyId") String facultyId, HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("application/pdf");
 
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
@@ -255,5 +284,4 @@ public class ControllerClass {
 		}
 		//System.out.println("call through ajax");
 	}
-	
 }

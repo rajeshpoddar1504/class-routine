@@ -50,4 +50,12 @@ public class FacultyRepoImpl implements FacultyRepoInt{
 		return batches;
 	}
 
+
+	@Override
+	public List<Map<String, Object>> getRoutineByFaculty(String faculty) {
+		String sqlForFacultyRountine = "SELECT * FROM faculty_time_day_details where faculty_abbr=?";
+		//System.out.println(jdbcTemp.queryForList(sqlForStudentRountine,batchId));
+		return jdbc.queryForList(sqlForFacultyRountine,faculty);
+	}
+
 }
