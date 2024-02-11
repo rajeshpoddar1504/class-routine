@@ -45,7 +45,7 @@ public class RepoClass implements RepoInt {
 				Object[] dataMap = data.get(i).values().toArray();
 
 				rowsUpdated = jdbcTemp.update(sqlForStudentRountine, dataMap);
-				System.out.println(rowsUpdated);
+				//System.out.println(rowsUpdated);
 				
 			}
 		} catch (Exception e) {
@@ -137,7 +137,7 @@ public class RepoClass implements RepoInt {
 	@Override
 	public List<Map<String, Object>> getStudentRoutineByBatch(String batchId) {
 		String sqlForStudentRountine = "SELECT * FROM batch_time_day_details where batch_abbr=?";
-		System.out.println(jdbcTemp.queryForList(sqlForStudentRountine,batchId));
+		//System.out.println(jdbcTemp.queryForList(sqlForStudentRountine,batchId));
 		return jdbcTemp.queryForList(sqlForStudentRountine,batchId);
 	}
 

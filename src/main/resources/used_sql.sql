@@ -349,3 +349,93 @@ FOR EACH ROW
 EXECUTE FUNCTION NEW_BATCH_TS_INSERTER_function();
 --postgres5 ends--
 
+
+----------------------------------
+
+CREATE OR REPLACE FUNCTION NEW_TIM_SLOT_DELETER_function()
+RETURNS TRIGGER AS $$
+DECLARE
+     batch_detail_set RECORD;
+     faculty_detail_set RECORD;
+     room_detail_set record;
+    
+BEGIN
+        delete from batch_time_day_details where time_slot=OLD.time_slot;
+    
+        delete from faculty_time_day_details where time_slot=OLD.time_slot;
+ 
+        delete from room_time_day_details where time_slot=OLD.time_slot;
+    
+    
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE or replace TRIGGER NEW_TIM_SLOT_DELETER_trigger
+AFTER DELETE ON class_time_slots
+FOR EACH ROW
+EXECUTE FUNCTION NEW_TIM_SLOT_DELETER_function();
+
+-------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION NEW_faculty_TS_DELETER_function()
+RETURNS TRIGGER AS $$
+DECLARE
+    time_slot_set RECORD;
+BEGIN
+    -- Iterate over all employees
+    
+        DELETE FROM faculty_time_day_details WHERE faculty_abbr=OLD.faculty_abbre;
+    
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER NEW_faculty_TS_DELETER_trigger
+AFTER DELETE ON faculty_details
+FOR EACH ROW
+EXECUTE FUNCTION NEW_faculty_TS_DELETER_function();
+
+-------------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION NEW_BATCH_TS_DELETER_function()
+RETURNS TRIGGER AS $$
+DECLARE
+    time_slot_set RECORD;
+BEGIN
+    -- Iterate over all employees
+    
+        DELETE FROM batch_time_day_details WHERE batch_abbr=OLD.batch_abbr;
+    
+    
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER NEW_BATCH_TS_DELETER_trigger
+AFTER DELETE ON batch_details
+FOR EACH ROW
+EXECUTE FUNCTION NEW_BATCH_TS_DELETER_function();
+
+--------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION NEW_ROOM_TS_DELETER_function()
+RETURNS TRIGGER AS $$
+DECLARE
+    time_slot_set RECORD;
+BEGIN
+    -- Iterate over all employees
+    
+        DELETE FROM room_time_day_details WHERE room_abbr=OLD.room_abbr;
+    
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER NEW_ROOM_TS_DELETER_trigger
+AFTER DELETE ON room_details
+FOR EACH ROW
+EXECUTE FUNCTION NEW_ROOM_TS_DELETER_function();

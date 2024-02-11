@@ -49,7 +49,7 @@ public class UserPDFExporter {
     List<Object> headerValues;
      String batchDesc;
     public UserPDFExporter(List<Map<String,Object>> scheduleMap, String batchDesc) {
-    	System.out.println(scheduleMap);
+    	//System.out.println(scheduleMap);
         this.scheduleMapList = scheduleMap;
         headerValues=scheduleMap.get(0).keySet().stream().filter(e->!(e.toString().equals("day"))).collect(Collectors.toList());
         columnsNm= headerValues.size()+1;

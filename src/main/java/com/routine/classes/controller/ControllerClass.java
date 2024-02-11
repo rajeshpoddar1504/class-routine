@@ -65,11 +65,14 @@ public class ControllerClass {
 		List<TimeSlotBean> slots= dateRoomServ.getTimeSlots();
 		List<DayBean> days=dateRoomServ.getDays();
 		
+		slots.stream().forEach(e->System.out.println( e.getTimeSlots()));
 		List<Map<String, Object>> routineList=studentServImpl.getStudentRoutineByBatch(batchId);
 		
 		//System.out.println(routineList);
 		
 		List<Map<String, Object>> convertedRoutine=convertToHorizontal(days,slots,routineList);
+		
+		//System.out.println("converted routine=="+convertedRoutine);
 		
 		mv.addObject("routine_day", days);
 		mv.addObject("routine_data", convertedRoutine);
@@ -237,7 +240,7 @@ public class ControllerClass {
 		List<Map<String, Object>> routineList=studentServImpl.getFacultyRoutine();
 		
 		List<Map<String, Object>> convertedRoutine=convertToHorizontal(days,slots,routineList);
-		System.out.println("converted=="+convertedRoutine);
+		//System.out.println("converted=="+convertedRoutine);
 		
 		UserPDFExporter pdfExp = new UserPDFExporter(convertedRoutine,"");
 		

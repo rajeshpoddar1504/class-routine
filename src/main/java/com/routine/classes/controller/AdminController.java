@@ -102,7 +102,7 @@ public class AdminController {
 	@PostMapping("rooms/get/filter")
 	public List<RoomBean> getRooms(String facultyAbbr,String selectedDay,String selectedBatch,String selectedTime) {
 		List<RoomBean> roomList = dateRoomServ.getRooms(facultyAbbr,selectedDay,selectedBatch,selectedTime);
-		roomList.forEach(e->System.out.println(e.getRoomDesc()));
+		//roomList.forEach(e->System.out.println(e.getRoomDesc()));
 		return roomList;
 	}
 
@@ -168,7 +168,7 @@ public class AdminController {
 
 	@PostMapping("batch/delete")
 	public int deleteBatch(String batchAbbr) {
-		System.out.println("batchAbbr=="+batchAbbr);
+		//System.out.println("batchAbbr=="+batchAbbr);
 		int rowsUpdated = dateRoomServ.deleteBatch(batchAbbr);
 		return rowsUpdated;
 	}

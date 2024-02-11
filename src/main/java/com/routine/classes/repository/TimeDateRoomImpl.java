@@ -94,9 +94,9 @@ public class TimeDateRoomImpl implements TimeDateRoomInt{
 	public List<Map<String, Object>> getTimeSlots(String facultyAbbr, String selectedDay, String selectedBatch) {
 		//String sql="select time_slot from batch_time_day_details  where "+selectedDay+" is null and batch_abbr=?";
 		
-		String sql="select distinct(batch.time_slot) from batch_time_day_details batch join faculty_time_day_details faculty on batch.time_slot=faculty.time_slot where batch."+selectedDay+" is null and batch.batch_abbr=?";
+		String sql="select distinct(batch.time_slot) from batch_time_day_details batch join faculty_time_day_details faculty on batch.time_slot=faculty.time_slot where (batch."+selectedDay+" is null AND faculty."+selectedDay+" is null) and (batch.batch_abbr=? AND faculty.faculty_abbr=?)";
 		
-		return jdbc.queryForList(sql,selectedBatch);
+		return jdbc.queryForList(sql,selectedBatch,facultyAbbr);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class TimeDateRoomImpl implements TimeDateRoomInt{
 
 	@Override
 	public int deleteBatch(String batchAbbr) {
-		System.out.println(batchAbbr);
+		//System.out.println(batchAbbr);
 		String sql="delete from batch_details where batch_abbr=?";
 		return jdbc.update(sql,batchAbbr);
 	} 
